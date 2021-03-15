@@ -21,6 +21,7 @@ func main() {
 	e.PUT("/update-user", controllers.UpdateUser)
 	e.DELETE("/delete-user", controllers.DeleteUser)
 	e.POST("/add-post", controllers.AddPost)
+	e.GET("/get-post", controllers.GetAllPost)
 	e.GET("/get-post", controllers.GetPost)
 	e.PUT("/update-post", controllers.UpdatePost)
 	//e.DELETE("/delete-post", controllers.DeletePost)

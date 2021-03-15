@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"main.go/config"
 	"main.go/pkg/db/model"
@@ -14,7 +15,7 @@ import (
 
 func AddPost(c echo.Context) error {
 	post := &model.Post{
-		Pid:    uuid.New().String(),
+		Pid: uuid.New().String(),
 	}
 	if err := c.Bind(post); err != nil {
 		return err
@@ -32,17 +33,33 @@ func AddPost(c echo.Context) error {
 	returnMessage = "Post: " + post.PostTitle + " added successfully to database :)"
 	return c.String(http.StatusCreated, returnMessage)
 }
-
 func GetPost(c echo.Context) error {
 	postTitle := c.QueryParam("postTitle")
 	var post bson.M
 	Postcollection := config.GetPostCollection()
-	Postcollection.FindOne(context.TODO(), bson.M{"postTitle": postTitle},
-	).Decode(&post)
-	if len(post) == 0{
+	Postcollection.FindOne(context.TODO(), bson.M{"postTitle": postTitle}).Decode(&post)
+	if len(post) == 0 {
 		return c.String(http.StatusOK, "post Not Found! :(")
 	}
 	return c.JSON(http.StatusOK, post)
+}
+
+func GetAllPost(c echo.Context) error {
+	postTitle := c.QueryParam("postTitle")
+	Postcollection := config.GetPostCollection()
+
+	opts := options.Find()
+	opts.SetSort(bson.D{{"postTitle", -1}})
+	sortCursor, err := Postcollection.Find(context.TODO(), bson.D{{"postTitle", bson.D{{"$gt", postTitle}}}}, opts)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var postSorted []bson.M
+	if err = sortCursor.All(context.TODO(), &postSorted); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(postSorted)
+	return c.JSON(http.StatusOK, postSorted)
 }
 
 func UpdatePost(c echo.Context) error {

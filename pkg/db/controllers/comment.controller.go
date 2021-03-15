@@ -13,7 +13,7 @@ import (
 
 func AddComment(c echo.Context) error {
 	comment := &model.Comment{
-		Cid:    uuid.New().String(),
+		Cid: uuid.New().String(),
 	}
 	if err := c.Bind(comment); err != nil {
 		return err
