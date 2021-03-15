@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"main.go/config"
 	"main.go/pkg/db/model"
@@ -31,6 +32,26 @@ func GetUser(c echo.Context) error {
 		return c.String(http.StatusOK, "user Not Found! :(")
 	}
 }
+
+
+func GetAllUser(c echo.Context) error {
+	email := c.QueryParam("email")
+	Usercollection := config.GetUserCollection()
+
+	opts := options.Find()
+	opts.SetSort(bson.D{{"email", -1}})
+	sortCursor, err := Usercollection.Find(context.TODO(), bson.D{{"email", bson.D{{"$gt", email}}}}, opts)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var userSorted []bson.M
+	if err = sortCursor.All(context.TODO(), &userSorted); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(userSorted)
+	return c.JSON(http.StatusOK, userSorted)
+}
+
 
 
 func AddUser(c echo.Context) error {
