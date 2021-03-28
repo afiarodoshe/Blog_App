@@ -27,6 +27,7 @@ func main() {
 	e.PUT("/update-post", controllers.UpdatePost)
 	//e.DELETE("/delete-post", controllers.DeletePost)
 	e.POST("/add-comment", controllers.AddComment)
+	//e.GET("/get-post", controllers.GetComment)
 	//e.PUT("/update-comment", controllers.UpdateComment)
 	//e.DELETE("/delete-comment", controllers.DeleteComment)
 	e.Logger.Fatal(e.Start(os.Getenv("PORT")))

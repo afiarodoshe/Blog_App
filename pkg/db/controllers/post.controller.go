@@ -33,6 +33,7 @@ func AddPost(c echo.Context) error {
 	returnMessage = "Post: " + post.PostTitle + " added successfully to database :)"
 	return c.String(http.StatusCreated, returnMessage)
 }
+
 func GetPost(c echo.Context) error {
 	postTitle := c.QueryParam("postTitle")
 	var post bson.M

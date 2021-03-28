@@ -31,4 +31,3 @@ func AddComment(c echo.Context) error {
 	returnMessage = "Comment: " + comment.CommentDetails + " added successfully to database :)"
 	return c.String(http.StatusCreated, returnMessage)
 }
-
