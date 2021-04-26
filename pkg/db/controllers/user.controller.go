@@ -26,6 +26,7 @@ func GetUser(c echo.Context) error {
 	if user["userStatus"] == "D" {
 		return c.String(http.StatusOK, "user Not Found! :(")
 	}
+	fmt.Println(user)
 	if len(user) > 0 {
 		return c.JSON(http.StatusOK, user)
 	} else {
