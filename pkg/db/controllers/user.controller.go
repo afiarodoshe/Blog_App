@@ -65,11 +65,9 @@ func AddUser(c echo.Context) error {
 	}
 
 	fmt.Println(user)
-
-	if !isEmailValid(user.Email) {
-		return c.JSON(http.StatusOK, "Invalid Email :(")
-	}
-
+	//if !isEmailValid(user.Email) {
+	//	return c.JSON(http.StatusOK, "Invalid Email :(")
+	//}
 	Usercollection := config.GetUserCollection()
 
 	var user1 bson.M
@@ -170,7 +168,6 @@ func DeleteUser(c echo.Context) error {
 	}
 }
 
-
 var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
 func isEmailValid(e string) bool {
@@ -179,4 +176,3 @@ func isEmailValid(e string) bool {
 	}
 	return emailRegex.MatchString(e)
 }
-
