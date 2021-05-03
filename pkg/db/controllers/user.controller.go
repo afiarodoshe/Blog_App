@@ -65,9 +65,9 @@ func AddUser(c echo.Context) error {
 	}
 
 	fmt.Println(user)
-	//if !isEmailValid(user.Email) {
-	//	return c.JSON(http.StatusOK, "Invalid Email :(")
-	//}
+	if !isEmailValid(user.Email) {
+		return c.JSON(http.StatusOK, "Invalid Email :(")
+	}
 	Usercollection := config.GetUserCollection()
 
 	var user1 bson.M
